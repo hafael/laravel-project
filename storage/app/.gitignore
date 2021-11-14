@@ -1,0 +1,4 @@
+*
+!public/
+!assets/banklist.json
+!.gitignore
