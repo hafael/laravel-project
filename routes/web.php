@@ -27,12 +27,28 @@ use Inertia\Inertia;
 |
 */
 
+/**
+ * Autenticação
+ */
+Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
+    Route::get('login', '\Autum\SAML\Http\Controllers\Auth\SamlController@login')->middleware(['guest:'.config('fortify.guard')])->name('login');
+    Route::get('logout', '\Autum\SAML\Http\Controllers\Auth\SamlController@logout')->name('logout');
+});
+
 Route::group([
     'middleware' => ['auth:sanctum', 'verified'],
 ], function(){
     Route::get('/dashboard', function() {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+});
+
+Route::group([
+    //
+], function(){
+    Route::get('/', function() {
+        return Inertia::render('Home');
+    })->name('home');
 });
 
 Route::group([

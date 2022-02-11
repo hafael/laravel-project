@@ -1,182 +1,201 @@
 <template>
-    <!-- header 
-    ================================================== -->
-    <header id="header" class="row">   
+    <div>
+        <inertia-head :title="pageTitle + 'Autum Blank'" />
+        <jet-banner />
 
-        <div class="header-logo">
-            <a :href="route('welcome')">Autum Wallet</a>
-        </div>
-
-        <nav id="header-nav-wrap">
-            <ul class="header-main-nav">
-                <!-- <li class="current"><a class="smoothscroll"  href="#home" title="home">Home</a></li> -->
-                <li><a class="smoothscroll"  href="#sobre" title="Sobre">Sobre</a></li>
-                <li><a class="smoothscroll"  href="#blockchain" title="Blockchain">Blockchain</a></li>
-                <li><a class="smoothscroll"  href="#tarifas" title="Tarifas">Tarifas</a></li>
-                <!-- <li><a class="smoothscroll"  href="#depoimentos" title="Depoimentos">Casos de Uso</a></li> -->
-                <li><a class="smoothscroll"  href="#stablecoins" title="Stablecoins">Stablecoins</a></li>	
-            </ul>
-
-            <a :href="route('login')" title="sign-up" class="button button-primary cta">
-                {{ $page.props.user ? $page.props.user.name : 'Entrar' }}
-            </a>
-        </nav>
-
-        <a class="header-menu-toggle" href="#"><span>Menu</span></a>
-        
-    </header> <!-- /header -->
-
-    <!-- Page Content -->
-    <main>
-        <slot></slot>
-    </main>
-
-    <!-- footer
-    ================================================== -->
-    <footer>
-        <div class="footer-main">
-            <div class="row">  
-
-                <div class="col-three md-1-3 tab-full footer-info">            
-
-                    <div class="footer-logo"></div>
-
-                    <p>
-                        Autum Wallet conecta os serviços bancários ao poder dos cripto-ativos através de soluções integradas.
-                    </p>
-
-                    <ul class="footer-social-list">
-                        <li>
-                            <a href="#"><i class="fa fa-facebook-square"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-behance"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-dribbble"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                        </li>
-                    </ul>
-                    
-                    
-                </div> <!-- end footer-info -->
-
-                <div class="col-three md-1-3 tab-1-2 mob-full footer-contact">
-
-                    <h4>Contato</h4>
-
-                    <p>
-                    Rua México, 31<br>
-                    Centro do Rio, RJ <br>
-                    24900-000 BR<br>
-                    </p>
-
-                    <p>
-                    contato@autum.com.br <br>
-                    Telefone: (+21) 971 965 544 <br>
-                    Atendimento de segunda a sexta-feira, de 9 ás 16h.
-                    </p>
-
-                </div> <!-- end footer-contact -->  
-
-                <div class="col-two md-1-3 tab-1-2 mob-full footer-site-links">
-
-                    <h4>Mapa do Site</h4>
-
-                    <ul class="list-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#sobre">Sobre Autum Wallet</a></li>
-                        <li><a href="#tarifas">Blockchain</a></li>
-                        <li><a href="#tarifas">Tarifas</a></li>
-                        <li><a href="#stablecoin">Stablecoins</a></li>
-                        <!-- <li><a href="#">FAQ</a></li> -->
-                        <li><a href="/images/termos-de-uso-autum-wallet.pdf" target="_blank">Termos de uso</a></li>
-                        <li><a href="/images/politica-de-privacidade-autum-wallet.pdf" target="_blank">Política de Privacidade</a></li>
-                    </ul>	      		
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-800 dark:text-white transition duration-300">
+            <nav class="bg-white border-b border-gray-100 dark:bg-gray-900 dark:text-white dark:border-gray-600">
+                <!-- Primary Navigation Menu -->
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex">
+                            <!-- Logo -->
+                            <div class="flex-shrink-0 flex items-center">
+                                <inertia-link :href="route('dashboard')">
+                                    <jet-application-mark class="block h-9 w-auto" />
+                                </inertia-link>
+                            </div>
                             
-                </div> <!-- end footer-site-links --> 
+                        </div>
 
-                <div class="col-four md-1-2 tab-full footer-subscribe">
+                        <div class="hidden sm:flex sm:items-center sm:ml-6">
 
-                    <h4>Notícias e novidades</h4>
+                            <toggle-dark-mode />
 
-                    <p>Cadastre-se para receber notícias e novidades em primeira mão sobre os nossos serviços. Fique atento à novos recursos e mudanças nas políticas de uso.</p>
-
-                    <div class="subscribe-form">
-                
-                        <form id="mc-form" class="group" novalidate="true">
-
-                            <input type="email" value="" name="EMAIL" class="email" id="mc-email" placeholder="Seu melhor email" required=""> 
-                
-                            <input type="submit" name="subscribe" value="Inscrever">
-                
-                            <label for="mc-email" class="subscribe-message"></label>
-                
-                        </form>
-
-                    </div>	      		
+                            <!-- Settings Dropdown -->
+                            <div class="ml-3 relative">
+                                <navbar-settings-dropdown  v-if="$page.props.user"/>
+                                
+                                <a :href="route('login')" class="inline-flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                    Login
+                                </a>
+                            </div>
                             
-                </div> <!-- end footer-subscribe -->         
+                        </div>
 
-            </div> <!-- /row -->
-        </div> <!-- end footer-main -->
+                        <!-- Hamburger -->
+                        <div class="flex items-center sm:hidden">
+                            <toggle-dark-mode />
 
-        <div class="footer-bottom">
+                            <button @click="showingNavigationDropdown = ! showingNavigationDropdown" class="ml-3 inline-flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" v-if="$page.props.user" />
+                                <UserCircleIcon class="w-8 h-8" v-else />
+                            </button>
 
-            <div class="row">
-
-                <div class="col-twelve">
-                    <div class="copyright">
-                        <span>© Copyright Autum 2021.</span> 
-                        <span>Autum Wallet é um serviço <a href="https://www.autum.com.br/" target="_blank">Autum</a></span>		         	
-                    </div>
-
-                    <div id="go-top">
-                        <a class="smoothscroll" title="Ir ao topo" href="#top"><i class="icon-arrow-up"></i></a>
+                            
+                        </div>
                     </div>
                 </div>
 
-            </div> <!-- end footer-bottom --> 
+                <!-- Responsive Navigation Menu -->
+                <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
+                    <!-- Responsive Settings Options -->
+                    <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600" v-if="!$page.props.user">
+                        <div class="mt-3 space-y-1">
+                            <jet-responsive-nav-link :href="route('login')">
+                                <template #icon><SignInIcon class="w-4 h-4" /></template>
+                                Login
+                            </jet-responsive-nav-link>
+                        </div>
+                    </div>
+                    <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600" v-else>
+                        <div class="flex items-center px-4 cursor-pointer" @click="goToDashboard">
+                            <div v-if="$page.props.jetstream.managesProfilePhotos" class="flex-shrink-0 mr-3" >
+                                <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
+                            </div>
 
+                            <div>
+                                <div class="font-medium text-base">{{ $page.props.user.name }} {{ $page.props.user.lastname }}</div>
+                                <div class="font-semibold text-sm text-gray-500">@{{ $page.props.user.username }}</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 space-y-1">
+
+                            <jet-responsive-nav-link :href="route('manager.dashboard')" :active="route().current('manager.dashboard')" v-if="profileIs('manager')">
+                                <template #icon><CogIcon class="w-4 h-4" /></template>
+                                Área do Gerente
+                            </jet-responsive-nav-link>
+
+                            <jet-responsive-nav-link :href="route('admin.dashboard')" :active="route().current('admin.dashboard')" v-if="$page.props.user.is_admin || profileIs('admin')">
+                                <template #icon><CogIcon class="w-4 h-4" /></template>
+                                Área administrativa
+                            </jet-responsive-nav-link>
+
+                            <jet-responsive-nav-link :href="route('contacts.index')" :active="route().current('contacts.index')">
+                                <template #icon><UserGroupIcon class="w-4 h-4" /></template>
+                                Meus Contatos
+                            </jet-responsive-nav-link>
+
+                            <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
+                                <template #icon><ExternalLinkIcon class="w-4 h-4" /></template>
+                                Minha Conta
+                            </jet-responsive-nav-link>
+
+                            <!-- Authentication -->
+                            <form method="POST" @submit.prevent="logout">
+                                <jet-responsive-nav-link as="button">
+                                    <template #icon><LogoutIcon class="w-4 h-4" /></template>
+                                    Sair
+                                </jet-responsive-nav-link>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                
+            </nav>
+
+            <!-- Page Heading -->
+            <header class="bg-white dark:bg-gray-900 dark:text-white shadow" v-if="$slots.header">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <slot name="header"></slot>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main>
+                <slot></slot>
+            </main>
+
+            <footer class="border-t-1 border-indigo-400">
+                <div class="max-w-7xl mx-auto pt-6 pb-3 px-4 sm:px-6 lg:px-8">
+                    <div class="text-center text-sm text-gray-400">Autum @ 2022 | <a href="https://autum.com.br" class="text-cyan-400 text-bold" title="Autum">autum.com.br</a></div>
+                </div>
+                <div class="flex justify-center">
+                    <div class="autum-brand light inline-block dark:hidden"></div>
+                    <div class="autum-brand dark hidden dark:inline-block"></div>
+                </div>
+                
+            </footer>
         </div>
-    </footer>
-
-    <cookie-law theme="dark-blue" storage-type="cookies" />
-
-    <div id="preloader"> 
-        <div id="loader"></div>
     </div>
 </template>
 
 <script>
+    import JetApplicationMark from '@/Jetstream/ApplicationMark'
+    import JetBanner from '@/Jetstream/Banner'
+    import JetDropdown from '@/Jetstream/Dropdown'
+    import JetDropdownLink from '@/Jetstream/DropdownLink'
+    import JetNavLink from '@/Jetstream/NavLink'
+    import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink'
+    import { ExternalLinkIcon, BriefcaseIcon, DocumentSearchIcon, CogIcon, UserCircleIcon, PuzzleIcon, UserAddIcon, UserGroupIcon, LogoutIcon } from '@heroicons/vue/outline'
+    import ToggleDarkMode from '@/Components/ToggleDarkMode'
+    import NotificationIcon from '@/Components/NotificationIcon'
+    import NotificationCentral from '@/Components/NotificationCentral'
+    import NavbarSettingsDropdown from '@/Components/NavbarSettingsDropdown'
 
-    import CookieLaw from '@/Components/Cookie'
-    
     export default {
         components: {
-            CookieLaw
+            JetApplicationMark,
+            JetBanner,
+            JetDropdown,
+            JetDropdownLink,
+            JetNavLink,
+            JetResponsiveNavLink,
+            ToggleDarkMode,
+            NotificationIcon,
+            NotificationCentral,
+            NavbarSettingsDropdown,
+            BriefcaseIcon,
+            CogIcon,
+            UserCircleIcon,
+            PuzzleIcon, 
+            UserAddIcon, 
+            UserGroupIcon,
+            LogoutIcon,
+            DocumentSearchIcon,
+            ExternalLinkIcon
         },
 
         data() {
             return {
-                
+                showingNavigationDropdown: false,
             }
         },
 
         computed: {
             
+            pageTitle() {
+                return this.$page.props.title ? $page.props.title + ' – ' : '';
+            }
         },
 
+        
+
         methods: {
-            
+
+
             logout() {
-                this.$inertia.post(route('logout'));
+                axios.post(route('logout')).then((response) => {
+                    window.location.replace('/');
+                }).catch((error) => {
+                    this.$inertia.post(route('logout'));
+                });
             },
+
+        
         }
     }
 </script>

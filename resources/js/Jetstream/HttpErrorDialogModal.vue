@@ -12,8 +12,8 @@
             <h3 class="text-lg font-semibold mb-3">{{ heading }}</h3>
             <p class="text-red-600 mb-2">{{ response.message }}</p>
             <ul class="list-disc" v-if="response.errors">
-                <li v-for="(error, idx) in response.errors" :key="idx" class="text-red-600 flex flex-col py-1">
-                    <strong class="text-bold">{{ __(idx) }}:</strong>
+                <li v-for="(error, idx) in response.errors" :key="idx" class="text-red-600 flex flex-col py-1 break-words">
+                    <!-- <strong class="text-bold">{{ __(idx) }}:</strong> -->
                     <span v-for="message in error" :key="message">{{ message }}</span>
                 </li>
             </ul>

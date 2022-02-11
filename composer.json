@@ -7,11 +7,15 @@
     "repositories": [
         {
             "type": "vcs",
-            "url":  "https://github.com/rootsoft/algorand-php"
+            "url": "https://github.com/web3p/web3.php"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/web3p/web3.php"
+            "url":  "https://github.com/hafael/autum-php-sdk"
+        },
+        {
+            "type": "vcs",
+            "url":  "https://github.com/hafael/autum-saml-sp"
         }
     ],
     "require": {
@@ -22,6 +26,8 @@
         "guzzlehttp/guzzle": "^7.4",
         "hafael/laraflake": "^1.2",
         "hafael/php-pix-client": "^0.1.4",
+        "hafael/autum-php-sdk": "dev-main",
+        "hafael/autum-saml-sp": "dev-main",
         "inertiajs/inertia-laravel": "^0.4.2",
         "laravel/framework": "^8.40",
         "laravel/jetstream": "^2.3",
@@ -30,7 +36,7 @@
         "petercoles/multilingual-country-list": "^1.2",
         "predis/predis": "^1.1",
         "sajya/server": "^4.0",
-        "sc0vu/web3.php": "dev-php-80",
+        "web3p/web3.php": "dev-php-80",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
@@ -40,7 +46,7 @@
         "lucascudo/laravel-pt-br-localization": "^1.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "files": [
@@ -55,13 +61,9 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "Autum\\SAML\\": "packages/autum/autum-saml-auth/",
             "Hafael\\Pix\\Client\\": "packages/hafael/laravel-pix-client/"
         }
     },
-    "exclude-from-classmap": [
-        "vendor\\rootsoft\\algorand-php\\src\\Indexer\\Services\\ManagesIndexerV2.php"
-    ],
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

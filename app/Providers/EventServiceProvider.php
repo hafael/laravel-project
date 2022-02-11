@@ -8,10 +8,6 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use App\Events\WalletCreated;
-use App\Listeners\SendAlgoForFirstWallet;
-use App\Listeners\OptInListedCoinsForFirstWallet;
-use App\Listeners\SendWalletCreatedNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         Verified::class => [
             SendWelcomeMail::class,
         ],
+        \Autum\SAML\Events\Webhooks\AccountUpdatedEvent::class => [
+            \Autum\SAML\Listeners\Webhooks\UpdateUserModel::class,
+        ]
 
     ];
 

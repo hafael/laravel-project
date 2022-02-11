@@ -1,9 +1,10 @@
 <template>
     <div>
+        <inertia-head :title="pageTitle + 'Autum Blank'" />
         <jet-banner />
 
-        <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-800 dark:text-white transition duration-300">
+            <nav class="bg-white border-b border-gray-100 dark:bg-gray-900 dark:text-white dark:border-gray-600">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -18,22 +19,22 @@
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('contacts.index')" :active="route().current('contacts.index')">
-                                    Contatos
-                                </jet-nav-link>
-                                <jet-nav-link 
-                                    :href="route('admin.dashboard')" 
-                                    :active="route().current('admin.index')"
-                                    v-if="$page.props.user.is_admin">
-                                    Admin
+                                    Meus Contatos
                                 </jet-nav-link>
                             </div>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
+
+                            <toggle-dark-mode />
+
+                            <NotificationIcon 
+                                :unread-notifications="hasUnreadNotications"
+                                @toggle="toggleNotifications" />
                             
-                            <div class="ml-3 relative">
+                            <div class="ml-3 relative" v-if="$page.props.jetstream.hasTeamFeatures">
                                 <!-- Teams Dropdown -->
-                                <jet-dropdown align="right" width="60" v-if="$page.props.jetstream.hasTeamFeatures">
+                                <jet-dropdown align="right" width="60" >
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition">
@@ -89,62 +90,24 @@
 
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">
-                                <jet-dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <button v-if="$page.props.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                            <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
-                                        </button>
-
-                                        <span v-else class="inline-flex rounded-md">
-                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
-                                                {{ $page.props.user.name }}
-
-                                                <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <!-- Account Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Configurações
-                                        </div>
-
-                                        <jet-dropdown-link :href="route('profile.show')">
-                                            Perfil
-                                        </jet-dropdown-link>
-
-                                        <jet-dropdown-link :href="route('contacts.index')">
-                                            Contatos
-                                        </jet-dropdown-link>
-
-                                        <jet-dropdown-link :href="route('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">
-                                            API
-                                        </jet-dropdown-link>
-
-                                        <div class="border-t border-gray-100"></div>
-
-                                        <!-- Authentication -->
-                                        <form @submit.prevent="logout">
-                                            <jet-dropdown-link as="button">
-                                                Sair
-                                            </jet-dropdown-link>
-                                        </form>
-                                    </template>
-                                </jet-dropdown>
+                                <navbar-settings-dropdown />
                             </div>
+                            
                         </div>
 
                         <!-- Hamburger -->
-                        <div class="mr-2 flex items-center sm:hidden">
-                            <button @click="showingNavigationDropdown = ! showingNavigationDropdown" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path :class="{'hidden': showingNavigationDropdown, 'inline-flex': ! showingNavigationDropdown }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                                    <path :class="{'hidden': ! showingNavigationDropdown, 'inline-flex': showingNavigationDropdown }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
+                        <div class="flex items-center sm:hidden">
+                            <toggle-dark-mode />
+
+                            <NotificationIcon 
+                                :unread-notifications="hasUnreadNotications"
+                                @toggle="toggleNotifications" />
+
+                            <button @click="showingNavigationDropdown = ! showingNavigationDropdown" class="ml-3 inline-flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
                             </button>
+
+                            
                         </div>
                     </div>
                 </div>
@@ -152,29 +115,37 @@
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
+                    <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                         <div class="flex items-center px-4 cursor-pointer" @click="goToMyAccount">
                             <div v-if="$page.props.jetstream.managesProfilePhotos" class="flex-shrink-0 mr-3" >
                                 <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
                             </div>
 
                             <div>
-                                <div class="font-medium text-base text-gray-800">{{ $page.props.user.name }}</div>
-                                <div class="font-medium text-sm text-gray-500">{{ $page.props.user.email }}</div>
+                                <div class="font-medium text-base">{{ $page.props.user.name }} {{ $page.props.user.lastname }}</div>
+                                <div class="font-semibold text-sm text-gray-500">@{{ $page.props.user.username }}</div>
                             </div>
                         </div>
 
                         <div class="mt-3 space-y-1">
 
-                            <jet-responsive-nav-link :href="route('admin.dashboard')" :active="route().current('admin.dashboard')" v-if="$page.props.user.is_admin">
-                                Admin
+                            <jet-responsive-nav-link :href="route('manager.dashboard')" :active="route().current('manager.dashboard')" v-if="profileIs('manager')">
+                                <template #icon><CogIcon class="w-4 h-4" /></template>
+                                Área do Gerente
+                            </jet-responsive-nav-link>
+
+                            <jet-responsive-nav-link :href="route('admin.dashboard')" :active="route().current('admin.dashboard')" v-if="$page.props.user.is_admin || profileIs('admin')">
+                                <template #icon><CogIcon class="w-4 h-4" /></template>
+                                Área administrativa
                             </jet-responsive-nav-link>
 
                             <jet-responsive-nav-link :href="route('contacts.index')" :active="route().current('contacts.index')">
+                                <template #icon><UserGroupIcon class="w-4 h-4" /></template>
                                 Meus Contatos
                             </jet-responsive-nav-link>
 
                             <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
+                                <template #icon><UserCircleIcon class="w-4 h-4" /></template>
                                 Perfil & Segurança
                             </jet-responsive-nav-link>
 
@@ -185,11 +156,11 @@
                             <!-- Authentication -->
                             <form method="POST" @submit.prevent="logout">
                                 <jet-responsive-nav-link as="button">
+                                    <template #icon><LogoutIcon class="w-4 h-4" /></template>
                                     Sair
                                 </jet-responsive-nav-link>
                             </form>
 
-                            
                             <!-- Team Management -->
                             <template v-if="$page.props.jetstream.hasTeamFeatures">
                                 <div class="border-t border-gray-200"></div>
@@ -230,10 +201,23 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Notification Central -->
+                <div :class="{'block': showingNotificationDropdown, 'hidden': ! showingNotificationDropdown}" class="relative md:fixed md:w-full h-full bottom-0">
+                    <div class="hidden md:block absolute w-full h-full bg-white dark:bg-black opacity-75" @click="toggleNotifications"></div>
+                    <!-- Responsive Settings Options -->
+                    <div class="border-t border-gray-200 md:absolute md:top-0 md:right-0 md:w-1/4 md:h-full md:border-l border-gray-400 dark:border-gray-500 bg-white dark:bg-black">
+                        <NotificationCentral
+                            class="pt-4 pb-1 w-full md:h-full"
+                            :notifications="notifications"
+                            @update="fetchNotifications"
+                            @close="toggleNotifications" />
+                    </div>
+                </div>
             </nav>
 
             <!-- Page Heading -->
-            <header class="bg-white shadow" v-if="$slots.header">
+            <header class="bg-white dark:bg-gray-900 dark:text-white shadow" v-if="$slots.header">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header"></slot>
                 </div>
@@ -245,9 +229,14 @@
             </main>
 
             <footer class="border-t-1 border-indigo-400">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <div class="text-center text-sm text-gray-400">Autum Wallet @ 2021 | <a href="https://autum.com.br" class="text-cyan-400 text-bold" title="Autum">Autum</a></div>
+                <div class="max-w-7xl mx-auto pt-6 pb-3 px-4 sm:px-6 lg:px-8">
+                    <div class="text-center text-sm text-gray-400">Autum @ 2022 | <a href="https://autum.com.br" class="text-cyan-400 text-bold" title="Autum">autum.com.br</a></div>
                 </div>
+                <div class="flex justify-center">
+                    <div class="autum-brand light inline-block dark:hidden"></div>
+                    <div class="autum-brand dark hidden dark:inline-block"></div>
+                </div>
+                
             </footer>
         </div>
     </div>
@@ -260,6 +249,11 @@
     import JetDropdownLink from '@/Jetstream/DropdownLink'
     import JetNavLink from '@/Jetstream/NavLink'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink'
+    import { BriefcaseIcon, DocumentSearchIcon, CogIcon, UserCircleIcon, PuzzleIcon, UserAddIcon, UserGroupIcon, LogoutIcon } from '@heroicons/vue/outline'
+    import ToggleDarkMode from '@/Components/ToggleDarkMode'
+    import NotificationIcon from '@/Components/NotificationIcon'
+    import NotificationCentral from '@/Components/NotificationCentral'
+    import NavbarSettingsDropdown from '@/Components/NavbarSettingsDropdown'
 
     export default {
         components: {
@@ -269,11 +263,26 @@
             JetDropdownLink,
             JetNavLink,
             JetResponsiveNavLink,
+            ToggleDarkMode,
+            NotificationIcon,
+            NotificationCentral,
+            NavbarSettingsDropdown,
+            BriefcaseIcon,
+            CogIcon,
+            UserCircleIcon,
+            PuzzleIcon, 
+            UserAddIcon, 
+            UserGroupIcon,
+            LogoutIcon,
+            DocumentSearchIcon
         },
 
         data() {
             return {
                 showingNavigationDropdown: false,
+                showingNotificationDropdown: false,
+                notifications: {},
+                notificationPooling: null
             }
         },
 
@@ -284,11 +293,37 @@
                 },{
                     name: 'MainNet'
                 }];
+            },
+
+            hasUnreadNotications() {
+                return !_.isEmpty(_.filter(this.notifications.data, (n) => {
+                    return _.isEmpty(n.read_at);
+                }));
+            },
+
+            pageTitle() {
+                return this.$page.props.title ? $page.props.title + ' – ' : '';
             }
+        },
+
+        mounted() {
+            this.fetchNotifications();
+
+            this.notificationPooling = setInterval(() => {
+                this.fetchNotifications();
+            }, 1000 * 10);
         },
         
 
         methods: {
+
+            profileIs(profile) {
+                return _.includes(this.$page.props.user.profiles, profile);
+            },
+
+            toggleNotifications() {
+                this.showingNotificationDropdown = !this.showingNotificationDropdown;
+            },
             switchToTeam(team) {
                 this.$inertia.put(route('current-team.update'), {
                     'team_id': team.id
@@ -317,18 +352,16 @@
                 });
             },
 
-            create() {
+            
+
+            fetchNotifications() {
                 
                 let self = this;
 
-                axios.post(route('api.wallets.tickets.store', this.wallet), this.newAssetFormData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                }).then((response) => {
-                    console.log('createNewAsset response', response);
-                    self.confirmNewAsset = true;
-                    self.mintingAsset = Object.assign({}, response.data);
+                axios.get(route('api.notifications.index')).then((response) => {
+                    self.notifications = response.data;
                 }).catch((error) => {
-                    console.log('createNewAsset error', error);
+                    console.log('fetchNotifications error', error);
                 });
             },
         }

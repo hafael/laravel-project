@@ -1,1 +1,0 @@
-## Biblioteca PHP para autenticar no servidor SAML da Autum
